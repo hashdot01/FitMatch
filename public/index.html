@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitMatch - AI-Powered Fit & Sizing Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0c10;
+      --bg-card: rgba(22, 27, 34, 0.75);
+      --bg-input: rgba(13, 17, 23, 0.7);
+      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --radius: 16px;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 520px;
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 40px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 1.75rem;
+      font-weight: 800;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      color: var(--text-main);
+      font-size: 1rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    input:focus, select:focus {
+      border-color: rgba(168, 85, 247, 0.8);
+      box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-primary {
+      background: var(--accent-gradient);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.95;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.2);
+    }
+
+    #message {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      text-align: center;
+      display: none;
+    }
+
+    #message:not(:empty) {
+      display: block;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo-badge">FitMatch</div>
+      <p>Smart Sizing & Fit Recommendation</p>
+    </div>
+
+    <!-- Authentication Section -->
+    <div id="auth-container">
+      <form id="auth-form" onsubmit="return false;">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="name@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••" required>
+        </div>
+        <div class="btn-group">
+          <button type="button" id="login-btn" class="btn-primary">Log In</button>
+          <button type="button" id="signup-btn" class="btn-secondary">Create Account</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div id="dashboard-container" class="hidden">
+      <div class="form-group">
+        <label for="brand-link">Product Link</label>
+        <input type="url" id="brand-link" placeholder="https://brand.com/product/123" required>
+      </div>
+
+      <div class="form-group">
+        <label for="item-type">Apparel Category</label>
+        <select id="item-type" onchange="handleItemTypeChange()">
+          <option value="">-- Choose Category --</option>
+          <option value="shirts">Shirts / Tops</option>
+          <option value="pants">Pants / Trousers</option>
+          <option value="shoes">Footwear / Shoes</option>
+        </select>
+      </div>
+
+      <div id="measurements-section" class="hidden">
+        <div id="shirt-inputs" class="form-group grid-2 hidden">
+          <div>
+            <label for="chest">Chest (in/cm)</label>
+            <input type="number" id="chest" placeholder="40">
+          </div>
+          <div>
+            <label for="shoulder">Shoulder (in/cm)</label>
+            <input type="number" id="shoulder" placeholder="18">
+          </div>
+        </div>
+
+        <div id="pants-inputs" class="form-group grid-2 hidden">
+          <div>
+            <label for="waist">Waist (in/cm)</label>
+            <input type="number" id="waist" placeholder="32">
+          </div>
+          <div>
+            <label for="length">Inseam (in/cm)</label>
+            <input type="number" id="length" placeholder="30">
+          </div>
+        </div>
+
+        <div id="shoes-inputs" class="form-group hidden">
+          <label for="foot-length">Foot Size (CM / US / UK / EU)</label>
+          <input type="text" id="foot-length" placeholder="e.g., 27 cm or 10 US">
+        </div>
+
+        <div class="btn-group">
+          <button type="button" id="submit-fit-btn" class="btn-primary">Calculate Best Fit</button>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <button type="button" id="logout-btn" class="btn-danger">Sign Out</button>
+      </div>
+    </div>
+
+    <div id="message"></div>
+  </div>
+
+  <script type="module" src="../api/auth.js"></script>
+  <script>
+    function handleItemTypeChange() {
+      const itemType = document.getElementById('item-type').value;
+      const measurementsSection = document.getElementById('measurements-section');
+      const shirtInputs = document.getElementById('shirt-inputs');
+      const pantsInputs = document.getElementById('pants-inputs');
+      const shoesInputs = document.getElementById('shoes-inputs');
+
+      shirtInputs.classList.add('hidden');
+      pantsInputs.classList.add('hidden');
+      shoesInputs.classList.add('hidden');
+
+      if (itemType) {
+        measurementsSection.classList.remove('hidden');
+        if (itemType === 'shirts') shirtInputs.classList.remove('hidden');
+        if (itemType === 'pants') pantsInputs.classList.remove('hidden');
+        if (itemType === 'shoes') shoesInputs.classList.remove('hidden');
+      } else {
+        measurementsSection.classList.add('hidden');
+      }
+    }
+  </script>
+</body>
+</html>
