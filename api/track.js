@@ -1,6 +1,6 @@
-import { identifyBrand } from '../../BrandIdentifier';
-import { fetchSizeChart } from '../../Scraper';
-import { calculateBestFit } from '../../SizingLogic';
+import { identifyBrand } from '../BrandIdentifier.js';
+import { fetchSizeChart } from '../Scraper.js';
+import { calculateBestFit } from '../SizingLogic.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {

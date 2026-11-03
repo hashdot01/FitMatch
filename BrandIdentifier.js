@@ -10,7 +10,7 @@ export function identifyBrand(inputUrl) {
     };
 
     for (const domain in domainMap) {
-      if (hostname.includes(domain)) {
+      if (hostname === domain || hostname.endsWith('.' + domain)) {
         return { identified: true, brand: domainMap[domain].brand, config: domainMap[domain] };
       }
     }
