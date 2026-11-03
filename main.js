@@ -1,4 +1,4 @@
-import { supabase } from '../lib/supabaseClient.js';
+import { supabase } from './lib/supabaseClient.js';
 
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
